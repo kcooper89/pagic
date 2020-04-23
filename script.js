@@ -1,8 +1,9 @@
-var $currentDay = $("#currentDay");
-var $timeBlocks = $(".time-block");
-var $scheduleArea = $(".schedule");
+//create variables
+var currentDay = $("#currentDay");
+var timeBlock = $(".timeBlock");
+var scheduleArea = $(".schedule");
 
-var toDoItems = [];
+var toDo = [];
 //each object has a hour property and a text property
  
 var currentDate = moment().format("dddd, MMMM Do");
@@ -13,7 +14,7 @@ function initializeSchedule(){
 //  console.log(toDoItems);
 
 //for each time block
-  $timeBlocks.each(function(){
+  $timeBlock.each(function(){
     var $thisBlock = $(this);
     var thisBlockHr = parseInt($thisBlock.attr("data-hour"));
 
@@ -24,11 +25,11 @@ function initializeSchedule(){
       text: "",
     }
     //add this todo object to todoitems array
-    toDoItems.push(todoObj);
+    toDo.push(todoObj);
   });
 
   //once we have looped thru timeblocks, save this array of objects to local storage by stringifying it first
-  localStorage.setItem("todos", JSON.stringify(toDoItems));
+  localStorage.setItem("todos", JSON.stringify(toDo));
   //console.log(toDoItems);
 }
 
@@ -53,19 +54,19 @@ function setUpTimeBlocks(){
 
 function renderSchedule(){
   
-  toDoItems = localStorage.getItem("todos");
-  toDoItems = JSON.parse(toDoItems);
+  toDo = localStorage.getItem("todos");
+  toDo = JSON.parse(toDo);
 
   //loop thru array then assign the text to the timeBlock with data-hour equal to hour. 
   //make a variable where [data-hour={hour}] then plug it in to the selector $('[data-hour={hour}')
   for (var i = 0; i < toDoItems.length; i++){
-    var itemHour = toDoItems[i].hour;
-    var itemText = toDoItems[i].text; 
+    var itemHour = toDo[i].hour;
+    var itemText = toDo[i].text; 
    
     $("[data-hour=" + itemHour + "]").children("textarea").val(itemText);
   }
 
-  console.log(toDoItems);
+  console.log(toDo);
 }
 
 function saveHandler(){
@@ -75,18 +76,18 @@ function saveHandler(){
   var itemToAdd = (($(this).parent()).children("textarea")).val();
 
   //see which item we need to update based on the hour of the button clicked matching
-  for (var j = 0; j < toDoItems.length; j++){
-    if (toDoItems[j].hour == hourToUpdate){
+  for (var j = 0; j < toDo.length; j++){
+    if (toDo[j].hour == hourToUpdate){
       //set its text to what was added to textarea
-      toDoItems[j].text = itemToAdd;
+      toDo[j].text = itemToAdd;
     }
   }
-  localStorage.setItem("todos", JSON.stringify(toDoItems));
+  localStorage.setItem("todos", JSON.stringify(toDo));
   renderSchedule();
 }
 
 // when the document loads
-$(document).ready(function(){
+(document).ready(function(){
 
   //format the timeblocks depending on time
   setUpTimeBlocks();
@@ -97,11 +98,11 @@ $(document).ready(function(){
   } //otherwise dont bother bc we get it from local storage
 
   //display current date
-  $currentDay.text(currentDate);
+  currentDay.text(currentDate);
 
   //render schedule from local storage
   renderSchedule();
   //when a todo item save button is clicked, save it
-  $scheduleArea.on("click", "button", saveHandler);
+  scheduleArea.on("click", "button", saveHandler);
   
 });
