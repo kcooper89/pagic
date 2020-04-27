@@ -166,25 +166,27 @@ function testTime() {
   };
 }
 testTime();
-// Loops through input area to get item from local storage
-//var x = [9, 10, 11, 12, 1, 2, 3, 4, 5];
 
-// form - control
-//$(".form" + x[i]).val(dataHour);
-
-// loop through all the times in the x array
-//for ...
-// retrieve the data from localstorage
-
-//update appropriate time block in the dom
-
-
-// Event listener to save to local stroage
+// Save button. Save information
 $(".saveBtn").click(function () {
-  event.preventDefault();
+  
   var formValue = $(this).siblings(".form-control").val();
-  console.log("This worked");
-  var listItem = $(this).parent().data("hour");
-
+  console.log("SAVED!");
+  var listItem = $(this).parent().attr("data-hour");
+  console.log(listItem)
   localStorage.setItem(listItem, formValue);
+  console.log(formValue)
+});
+
+// Pull information from local storage
+$(document).ready(function(){
+  $('.form9').attr('value', localStorage.getItem('9'));
+  $('.form10').attr('value', localStorage.getItem('10'));
+  $('.form11').attr('value', localStorage.getItem('11'));
+  $('.form12').attr('value', localStorage.getItem('12'));
+  $('.form1').attr('value', localStorage.getItem('1'));
+  $('.form2').attr('value', localStorage.getItem('2'));
+  $('.form3').attr('value', localStorage.getItem('3'));
+  $('.form4').attr('value', localStorage.getItem('4'));
+  $('.form5').attr('value', localStorage.getItem('5'));
 });
